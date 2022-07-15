@@ -1,0 +1,70 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "AnyCodable",
+        "repositoryURL": "https://github.com/Flight-School/AnyCodable.git",
+        "state": {
+          "branch": null,
+          "revision": "876d162385e9862ae8b3c8d65dc301312b040005",
+          "version": "0.6.0"
+        }
+      },
+      {
+        "package": "Base58Swift",
+        "repositoryURL": "https://github.com/mathwallet/Base58Swift.git",
+        "state": {
+          "branch": null,
+          "revision": "916940466f7e149b4029832ba5521252d7d68d92",
+          "version": "3.0.0"
+        }
+      },
+      {
+        "package": "BigInt",
+        "repositoryURL": "https://github.com/attaswift/BigInt.git",
+        "state": {
+          "branch": null,
+          "revision": "0ed110f7555c34ff468e72e1686e59721f2b0da6",
+          "version": "5.3.0"
+        }
+      },
+      {
+        "package": "CryptoSwift",
+        "repositoryURL": "https://github.com/krzyzanowskim/CryptoSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "039f56c5d7960f277087a0be51f5eb04ed0ec073",
+          "version": "1.5.1"
+        }
+      },
+      {
+        "package": "PromiseKit",
+        "repositoryURL": "https://github.com/mxcl/PromiseKit.git",
+        "state": {
+          "branch": null,
+          "revision": "c946b7561fbe11379a874e59faa2c5f8077ae0e1",
+          "version": "6.17.1"
+        }
+      },
+      {
+        "package": "Secp256k1Swift",
+        "repositoryURL": "https://github.com/mathwallet/Secp256k1Swift.git",
+        "state": {
+          "branch": null,
+          "revision": "318da87a951ba585a3b82a3c757e2f2ee0f8b9b7",
+          "version": "1.2.6"
+        }
+      },
+      {
+        "package": "TweetNacl",
+        "repositoryURL": "https://github.com/lishuailibertine/tweetnacl-swiftwrap",
+        "state": {
+          "branch": null,
+          "revision": "2dc538b4f76ab5db14f25f146d8d7e640a8a6bbc",
+          "version": "1.0.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
