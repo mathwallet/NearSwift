@@ -13,7 +13,7 @@ public struct BlockHash: BorshCodable, CustomStringConvertible {
     
     public init(encodedString: String) throws {
         guard let _data = encodedString.base58Decoded else {
-            throw ProviderDecodingError.notExpected
+            throw NearError.decodingError
         }
         self.data = _data
     }

@@ -8,18 +8,6 @@
 import Foundation
 import BigInt
 
-
-public enum AccessKeyDecodingError: LocalizedError {
-    case notExpected
-    
-    public var errorDescription: String? {
-        switch self {
-        case .notExpected:
-            return "Not Expected"
-        }
-    }
-}
-
 public struct FunctionCallPermission {
     public let allowance: UInt128?
     public let receiverId: String
@@ -126,7 +114,7 @@ extension AccessKeyPermission: Decodable {
             let permission = try container.decode(FunctionCallPermission.self, forKey: .functionCall)
             self = .functionCall(permission)
         } else {
-            throw AccessKeyDecodingError.notExpected
+            throw NearError.decodingError
         }
     }
 }

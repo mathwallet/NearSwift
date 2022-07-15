@@ -8,8 +8,6 @@
 import Foundation
 import PromiseKit
 
-public struct ProtocolConfigError: LocalizedError {}
-
 public struct AccountState: Codable {
     public let accountId: String?
     public let staked: String?
@@ -80,7 +78,7 @@ public final class Account {
             when(fulfilled: provider.experimentalProtocolConfig(blockQuery: .finality(.final)), viewState())
         }.map { (protocolConfig, state) -> AccountBalance in
             guard let storageAmountPerByte = protocolConfig.runtimeConfig?.storageAmountPerByte else {
-                throw ProtocolConfigError()
+                throw NearError.providerError("Protocol Config Error")
             }
             let costPerByte = UInt128(stringLiteral: storageAmountPerByte)
             let stateStaked = UInt128(integerLiteral: UInt64(state.storageUsage)) * costPerByte

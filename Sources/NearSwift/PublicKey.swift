@@ -23,29 +23,12 @@ public enum KeyType: String, BorshCodable, Equatable {
         switch value {
         case 0: self = .ED25519
         case 1: self = .SECP256k1
-        default: throw BorshDecodingError.unknownData
+        default: throw NearError.decodingError
         }
     }
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.rawValue == rhs.rawValue
-    }
-}
-
-public enum PublicKeyDecodeError: LocalizedError {
-    case invalidKeyFormat(String)
-    case unknownKeyType
-    case notExpected
-    
-    public var errorDescription: String? {
-        switch self {
-        case .invalidKeyFormat(let reason):
-            return "Invalid Key \(reason)"
-        case .unknownKeyType:
-            return "Unknwon Key Type"
-        case .notExpected:
-            return "Not Expected"
-        }
     }
 }
 
@@ -66,9 +49,9 @@ public struct PublicKey: CustomStringConvertible {
     public init(keyType: KeyType, data: Data) throws {
         switch keyType {
         case .ED25519:
-            guard data.count == 32 else { throw PublicKeyDecodeError.unknownKeyType }
+            guard data.count == 32 else { throw NearError.decodingError }
         case .SECP256k1:
-            guard data.count == 64 else { throw PublicKeyDecodeError.unknownKeyType }
+            guard data.count == 64 else { throw NearError.decodingError }
         }
         self.keyType = keyType
         self.data = data
@@ -80,10 +63,10 @@ public struct PublicKey: CustomStringConvertible {
         case 1:
             try self.init(keyType: .ED25519, data: parts[0].base58Decoded ?? Data())
         case 2:
-            guard let keyType = KeyType(rawValue: parts[0]) else { throw PublicKeyDecodeError.unknownKeyType }
+            guard let keyType = KeyType(rawValue: parts[0]) else { throw NearError.decodingError }
             try self.init(keyType: keyType, data: parts[1].base58Decoded ?? Data())
         default:
-            throw PublicKeyDecodeError.invalidKeyFormat("Invlaid encoded key format, must be <curve>:<encoded key>")
+            throw NearError.keyError("Invlaid encoded key format, must be <curve>:<encoded key>")
         }
     }
     
@@ -97,7 +80,7 @@ extension PublicKey: Decodable {
         if let container = try? decoder.singleValueContainer(), let value = try? container.decode(String.self) {
             self = try PublicKey(encodedKey: value)
         } else {
-            throw AccessKeyDecodingError.notExpected
+            throw NearError.notExpected
         }
     }
 }

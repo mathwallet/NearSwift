@@ -9,20 +9,6 @@ import Foundation
 import AnyCodable
 import PromiseKit
 
-public enum ProviderDecodingError: LocalizedError {
-    case error(type: String = "UntypedError", message: String?)
-    case notExpected
-    
-    public var errorDescription: String? {
-        switch self {
-        case .error(let type, let message):
-            return "\(type):\(message ?? "")"
-        case .notExpected:
-            return "Not Expected"
-        }
-    }
-}
-
 public struct RPCError: Error, Decodable {
     public let blockHeight: Int
     public let blockHash: String
@@ -146,7 +132,7 @@ public enum ExecutionStatus: Decodable, Equatable {
             self = .failure(value)
             return
         }
-        throw ProviderDecodingError.notExpected
+        throw NearError.notExpected
     }
 }
 
@@ -190,7 +176,7 @@ public enum FinalExecutionStatus: Decodable, Equatable {
             self = .failure(value)
             return
         }
-        throw ProviderDecodingError.notExpected
+        throw NearError.notExpected
     }
 }
 

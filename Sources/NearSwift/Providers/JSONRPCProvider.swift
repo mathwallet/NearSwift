@@ -1,5 +1,5 @@
 //
-//  JSONRPCError.swift
+//  JSONRPCProvider.swift
 //
 //
 //  Created by mathwallet on 2022/7/13.
@@ -8,20 +8,6 @@
 
 import Foundation
 import PromiseKit
-
-enum JSONRPCError: LocalizedError {
-    case unknown
-    case nodeError(String)
-    
-    var errorDescription: String? {
-        switch self {
-        case .unknown:
-            return "Unknown"
-        case .nodeError(let message):
-            return message
-        }
-    }
-}
 
 public struct JSONRPCHandlerErrorCause: Decodable {
   public let name: String
@@ -83,7 +69,7 @@ extension JSONRPCProvider {
                         return
                     }
                     guard data != nil else {
-                        rp.resolver.reject(JSONRPCError.nodeError("Received an error message from node"))
+                        rp.resolver.reject(NearError.providerError("Received an error message from node"))
                         return
                     }
                     rp.resolver.fulfill(data!)
@@ -114,9 +100,9 @@ extension JSONRPCProvider {
                 if let json = result?["error"],
                     let processData = try? JSONSerialization.data(withJSONObject: json),
                     let decoded = try? decoder.decode(JSONRPCHandlerError.self, from: processData) {
-                    throw JSONRPCError.nodeError(decoded.message)
+                    throw NearError.providerError(decoded.message)
                 }
-                throw JSONRPCError.nodeError("Node response is empty")
+                throw NearError.providerError("Node response is empty")
             }
     }
 
