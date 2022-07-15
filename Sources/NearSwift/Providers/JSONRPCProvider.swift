@@ -8,15 +8,17 @@
 
 import Foundation
 import PromiseKit
+import AnyCodable
 
 public struct JSONRPCHandlerErrorCause: Decodable {
-  public let name: String
+    public let name: String
 }
 
 public struct JSONRPCHandlerError: Decodable {
-  public let cause: JSONRPCHandlerErrorCause
-  public let code: Int
-  public let message: String
+    public let cause: JSONRPCHandlerErrorCause
+    public let code: Int
+    public let message: String
+    public let data: String
 }
 
 public enum Finality: String, Codable {
@@ -82,7 +84,7 @@ extension JSONRPCProvider {
         return rp.promise.ensure(on: queue) {
                 task = nil
             }.map(on: queue){ (data: Data) throws -> T in
-                debugPrint(String(data: data, encoding: .utf8) ?? "")
+                debugPrint(try JSONDecoder().decode(AnyDecodable.self, from: data).value)
                 
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -92,15 +94,13 @@ extension JSONRPCProvider {
                 }
                 
                 let result = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-                if let json = result?["result"],
-                    let processData = try? JSONSerialization.data(withJSONObject: json) {
+                if let json = result?["result"], let processData = try? JSONSerialization.data(withJSONObject: json) {
                     let decoded = try decoder.decode(T.self, from: processData)
                     return decoded
                 }
-                if let json = result?["error"],
-                    let processData = try? JSONSerialization.data(withJSONObject: json),
-                    let decoded = try? decoder.decode(JSONRPCHandlerError.self, from: processData) {
-                    throw NearError.providerError(decoded.message)
+                if let json = result?["error"], let processData = try? JSONSerialization.data(withJSONObject: json) {
+                    let decoded = try decoder.decode(JSONRPCHandlerError.self, from: processData)
+                    throw NearError.providerError("\(decoded.data)")
                 }
                 throw NearError.providerError("Node response is empty")
             }
