@@ -28,8 +28,8 @@ public struct KeyPairEd25519: KeyPair, CustomStringConvertible {
     }
     
     public static func fromSeed(seed: Data) throws -> Self {
-      let newKeyPair = try NaclSign.KeyPair.keyPair(fromSeed: seed )
-      return try KeyPairEd25519(secretKey: newKeyPair.secretKey.base58Encoded)
+        let newKeyPair = try NaclSign.KeyPair.keyPair(fromSeed: seed )
+        return try KeyPairEd25519(secretKey: newKeyPair.secretKey.base58Encoded)
     }
     
     public static func fromRandom() throws -> Self {

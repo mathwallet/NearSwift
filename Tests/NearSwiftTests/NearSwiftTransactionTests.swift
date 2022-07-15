@@ -1,5 +1,5 @@
 //
-//  NearTransactionTests.swift
+//  NearSwiftTransactionTests.swift
 //  
 //
 //  Created by mathwallet on 2022/7/14.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import NearSwift
 
-class NearTransactionTests: XCTestCase {
+class NearSwiftTransactionTests: XCTestCase {
     
     static let network = Network(name: "testnet", chainId: "testnet")
     static let url = URL(string: "https://rpc.testnet.near.org")!
