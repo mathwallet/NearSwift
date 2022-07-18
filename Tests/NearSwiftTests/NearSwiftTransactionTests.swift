@@ -69,7 +69,7 @@ class NearSwiftTransactionTests: XCTestCase {
                 let keyPair = try! keyPairFromString(encodedKey: "ed25519:LiVgKxE7jgzPvHaoey6rLT1Mo6pYvt2Lp4dMZoC8S3tdcuSTZ1bk2M5RJmeYjgJgkJSFdywaobHmsE4JeGXEKcp") as! KeyPairEd25519
                 let publicKey = keyPair.getPublicKey()
                 let actions: [Action] = [
-                    .transfer(Transfer(deposit: UInt128(stringLiteral: "1000000000000000000000000")))
+                    .addKey(AddKey(publicKey: try PublicKey(encodedKey: "ed25519:G99cFHwTWvJDqiGWMw7HRA61rsQgk8VqbMq5UmZfbqY8"), accessKey: AccessKey(nonce: 0, permission: .fullAccess(FullAccessPermission()))))
                 ]
                 let account = Account(provider: Self.provider, accountId: "near2near.testnet")
                 let accountState = try account.viewState().wait()
@@ -79,7 +79,7 @@ class NearSwiftTransactionTests: XCTestCase {
                 let transaction = Transaction(signerId: account.accountId,
                                               publicKey: publicKey,
                                               nonce: accessKey.nonce + 1,
-                                              receiverId: "near.testnet",
+                                              receiverId: account.accountId,
                                               blockHash: blockHash,
                                               actions: actions)
                 debugPrint(transaction)
