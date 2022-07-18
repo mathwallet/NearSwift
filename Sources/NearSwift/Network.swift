@@ -10,4 +10,9 @@ import Foundation
 public struct Network {
     public let name: String
     public let chainId: String
+    
+    public init(name: String, chainId: String) {
+        self.name = name
+        self.chainId = chainId
+    }
 }
