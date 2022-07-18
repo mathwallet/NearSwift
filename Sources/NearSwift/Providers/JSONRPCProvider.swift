@@ -39,7 +39,7 @@ public final class JSONRPCProvider {
         return urlSession
     }()
 
-    init(url: URL, network: Network? = nil) {
+    public init(url: URL, network: Network? = nil) {
         self.url = url
         self.network = network
     }

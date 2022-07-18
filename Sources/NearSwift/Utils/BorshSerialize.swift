@@ -38,7 +38,7 @@ extension Bool: BorshSerializable {
 }
 
 extension Optional where Wrapped: BorshSerializable {
-    func serialize(to writer: inout Data) throws {
+    public func serialize(to writer: inout Data) throws {
         switch self {
         case .some(let value):
           try UInt8(1).serialize(to: &writer)
