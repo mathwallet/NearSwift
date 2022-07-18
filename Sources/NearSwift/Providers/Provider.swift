@@ -10,7 +10,7 @@ import AnyCodable
 import PromiseKit
 
 public struct RPCError: Error, Decodable {
-    public let blockHeight: Int
+    public let blockHeight: UInt64
     public let blockHash: String
     public let logs: [String]
     public let error: String
@@ -18,7 +18,7 @@ public struct RPCError: Error, Decodable {
 
 public struct SyncInfo: Codable {
     public let latestBlockHash: String
-    public let latestBlockHeight: Int
+    public let latestBlockHeight: UInt64
     public let latestBlockTime: String
     public let latestStateRoot: String
     public let syncing: Bool
@@ -43,14 +43,14 @@ public struct SimpleRPCResult: Decodable {
     public let result: String
 }
 
-public typealias BlockHeight = Int
+public typealias BlockHeight = UInt64
 public enum BlockId {
     case blockHash(String)
-    case blockHeight(Int)
+    case blockHeight(UInt64)
 }
 public enum NullableBlockId {
     case blockHash(String)
-    case blockHeight(Int)
+    case blockHeight(UInt64)
     case null
 }
 
