@@ -45,7 +45,7 @@ public final class Account {
       self.accountId = accountId
     }
     
-    func viewState() -> Promise<AccountState> {
+    public func viewState() -> Promise<AccountState> {
         let params = [
             "request_type": "view_account",
             "finality": Finality.optimistic.rawValue,
@@ -54,7 +54,7 @@ public final class Account {
         return provider.query(params: params)
     }
     
-    func viewAccessKey(publicKey: PublicKey) -> Promise<AccessKey> {
+    public func viewAccessKey(publicKey: PublicKey) -> Promise<AccessKey> {
         let params = [
             "request_type": "view_access_key",
             "finality": Finality.optimistic.rawValue,
@@ -64,7 +64,7 @@ public final class Account {
         return provider.query(params: params)
     }
     
-    func viewAccessKeyList() -> Promise<AccountAccessKeyList> {
+    public func viewAccessKeyList() -> Promise<AccountAccessKeyList> {
         let params = [
             "request_type": "view_access_key_list",
             "finality": Finality.optimistic.rawValue,
@@ -73,7 +73,7 @@ public final class Account {
         return provider.query(params: params)
     }
     
-    func balance() -> Promise<AccountBalance> {
+    public func balance() -> Promise<AccountBalance> {
         firstly {
             when(fulfilled: provider.experimentalProtocolConfig(blockQuery: .finality(.final)), viewState())
         }.map { (protocolConfig, state) -> AccountBalance in
