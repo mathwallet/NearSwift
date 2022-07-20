@@ -28,6 +28,10 @@ extension CreateAccount: BorshCodable {
 
 public struct DeployContract: IAction {
     public let code: [UInt8]
+    
+    public init(code: [UInt8]) {
+        self.code = code
+    }
 }
 
 extension DeployContract: HumanReadable {
@@ -54,6 +58,13 @@ public struct FunctionCall: IAction {
     public let args: [UInt8]
     public let gas: UInt64
     public let deposit: UInt128
+    
+    public init(methodName: String, args: [UInt8], gas: UInt64, deposit: UInt128) {
+        self.methodName = methodName
+        self.args = args
+        self.gas = gas
+        self.deposit = deposit
+    }
 }
 
 extension FunctionCall: HumanReadable {
@@ -85,6 +96,10 @@ extension FunctionCall: BorshCodable {
 
 public struct Transfer: IAction {
   public let deposit: UInt128
+    
+    public init(deposit: UInt128) {
+        self.deposit = deposit
+    }
 }
 
 extension Transfer: HumanReadable {
@@ -106,8 +121,13 @@ extension Transfer: BorshCodable {
 }
 
 public struct Stake: IAction {
-  public let stake: UInt128
-  public let publicKey: PublicKey
+    public let stake: UInt128
+    public let publicKey: PublicKey
+    
+    public init(stake: UInt128, publicKey: PublicKey) {
+        self.stake = stake
+        self.publicKey = publicKey
+    }
 }
 
 extension Stake: HumanReadable {
@@ -134,6 +154,11 @@ extension Stake: BorshCodable {
 public struct AddKey: IAction {
     public let publicKey: PublicKey
     public let accessKey: AccessKey
+    
+    public init(publicKey: PublicKey, accessKey: AccessKey) {
+        self.publicKey = publicKey
+        self.accessKey = accessKey
+    }
 }
 
 extension AddKey: HumanReadable {
@@ -159,6 +184,10 @@ extension AddKey: BorshCodable {
 
 public struct DeleteKey: IAction {
     public let publicKey: PublicKey
+    
+    public init(publicKey: PublicKey) {
+        self.publicKey = publicKey
+    }
 }
 
 extension DeleteKey: HumanReadable {
@@ -181,6 +210,10 @@ extension DeleteKey: BorshCodable {
 
 public struct DeleteAccount: IAction {
     public let beneficiaryId: String
+    
+    public init(beneficiaryId: String) {
+        self.beneficiaryId = beneficiaryId
+    }
 }
 
 extension DeleteAccount: HumanReadable {

@@ -12,6 +12,12 @@ public struct FunctionCallPermission {
     public let allowance: UInt128?
     public let receiverId: String
     public let methodNames: [String]
+    
+    public init(allowance: UInt128? = nil, receiverId: String, methodNames: [String]) {
+        self.allowance = allowance
+        self.receiverId = receiverId
+        self.methodNames = methodNames
+    }
 }
 
 extension FunctionCallPermission: HumanReadable {
@@ -141,6 +147,11 @@ extension AccessKeyPermission: BorshCodable {
 public struct AccessKey: Decodable {
     public var nonce: UInt64
     public let permission: AccessKeyPermission
+    
+    public init(nonce: UInt64, permission: AccessKeyPermission) {
+        self.nonce = nonce
+        self.permission = permission
+    }
     
     public static func fullAccessKey() -> AccessKey {
         return AccessKey(nonce: 0, permission: .fullAccess(FullAccessPermission()))

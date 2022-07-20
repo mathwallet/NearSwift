@@ -75,6 +75,12 @@ public struct PublicKey: CustomStringConvertible {
     }
 }
 
+extension PublicKey: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.keyType == rhs.keyType && lhs.data == rhs.data
+    }
+}
+
 extension PublicKey: Decodable {
     public init(from decoder: Decoder) throws {
         if let container = try? decoder.singleValueContainer(), let value = try? container.decode(String.self) {

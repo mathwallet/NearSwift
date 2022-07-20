@@ -38,4 +38,17 @@ final class NearSwiftKeyPairTests: XCTestCase {
         let newKeyPair = try! keyPairFromString(encodedKey: keyPair.description) as! KeyPairEd25519
         XCTAssertEqual(newKeyPair.description, keyPair.description)
     }
+    
+    
+    func testPublicKeyEquatableExample() throws {
+        let pubKey1 = try PublicKey(encodedKey: "ed25519:AYWv9RAN1hpSQA4p1DLhCNnpnNXwxhfH9qeHN8B4nJ59")
+        let pubKey2 = try PublicKey(keyType: .ED25519, data: Data(hex: "8dcc038db73ae67aad8b3c7f68821945462ed42506d3d0090182c21907e9f30c"))
+        let pubKey3 = try PublicKey(keyType: .SECP256k1, data: Data(hex: "99c6f51ad6f98c9c583f8e92bb7758ab2ca9a04110c0a1126ec43e5453d196c166b489a4b7c491e7688e6ebea3a71fc3a1a48d60f98d5ce84c93b65e423fde91"))
+        let pubKey4 = try PublicKey(encodedKey: "secp256k1:45KcWwYt6MYRnnWFSxyQVkuu9suAzxoSkUMEnFNBi9kDayTo5YPUaqMWUrf7YHUDNMMj3w75vKuvfAMgfiFXBy28")
+        
+        XCTAssertTrue(pubKey1 == pubKey2)
+        XCTAssertTrue(pubKey1 != pubKey3)
+        XCTAssertTrue(pubKey3 == pubKey4)
+    }
+    
 }
