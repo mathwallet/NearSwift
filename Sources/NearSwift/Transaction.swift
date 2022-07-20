@@ -16,6 +16,15 @@ public struct Transaction {
     public let blockHash: BlockHash
     public let actions: [Action]
     
+    public init(signerId: String, publicKey: PublicKey, nonce: UInt64, receiverId: String, blockHash: BlockHash, actions: [Action]) {
+        self.signerId = signerId
+        self.publicKey = publicKey
+        self.nonce = nonce
+        self.receiverId = receiverId
+        self.blockHash = blockHash
+        self.actions = actions
+    }
+    
     public func txHash() throws -> Data {
         return try BorshEncoder().encode(self).sha256()
     }
