@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import BigInt
 
 public protocol BorshSerializable {
     func serialize(to writer: inout Data) throws

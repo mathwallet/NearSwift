@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import BigInt
 
 public struct FunctionCallPermission {
     public let allowance: UInt128?

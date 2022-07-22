@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Base58Swift
 
 public enum KeyType: String, BorshCodable, Equatable {
     case ED25519 = "ed25519"
@@ -61,17 +62,17 @@ public struct PublicKey: CustomStringConvertible {
         let parts = encodedKey.components(separatedBy: ":")
         switch parts.count {
         case 1:
-            try self.init(keyType: .ED25519, data: parts[0].base58Decoded ?? Data())
+            try self.init(keyType: .ED25519, data: parts[0].base58DecodedData)
         case 2:
             guard let keyType = KeyType(rawValue: parts[0]) else { throw NearError.decodingError }
-            try self.init(keyType: keyType, data: parts[1].base58Decoded ?? Data())
+            try self.init(keyType: keyType, data: parts[1].base58DecodedData)
         default:
             throw NearError.keyError("Invlaid encoded key format, must be <curve>:<encoded key>")
         }
     }
     
     public var description: String {
-        return "\(keyType.rawValue):\(data.base58Encoded)"
+        return "\(keyType.rawValue):\(data.bytes.base58EncodedString)"
     }
 }
 

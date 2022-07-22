@@ -8,6 +8,7 @@
 import Foundation
 import TweetNacl
 import Secp256k1Swift
+import Base58Swift
 
 public protocol KeyPair {
     func sign(message: Data) throws -> Signature
@@ -21,24 +22,25 @@ public struct KeyPairEd25519: KeyPair, CustomStringConvertible {
     private let secretKey: String
     
     public init(secretKey: String) throws {
-        guard let _keyData = secretKey.base58Decoded else { throw NearError.keyError("Unknown key:\(secretKey)") }
-        try self.init(secretKey: _keyData)
+        let secretKeyData = secretKey.base58DecodedData
+        guard !secretKeyData.isEmpty else { throw NearError.keyError("Unknown key:\(secretKey)") }
+        try self.init(secretKey: secretKeyData)
     }
     
     public init(secretKey: Data) throws {
         let keyPair = try NaclSign.KeyPair.keyPair(fromSecretKey: secretKey)
         self.publicKey = try PublicKey(keyType: .ED25519, data: keyPair.publicKey)
-        self.secretKey = secretKey.base58Encoded
+        self.secretKey = secretKey.bytes.base58EncodedString
     }
     
     public static func fromSeed(seed: Data) throws -> Self {
         let newKeyPair = try NaclSign.KeyPair.keyPair(fromSeed: seed )
-        return try KeyPairEd25519(secretKey: newKeyPair.secretKey.base58Encoded)
+        return try KeyPairEd25519(secretKey: newKeyPair.secretKey.bytes.base58EncodedString)
     }
     
     public static func fromRandom() throws -> Self {
         let newKeyPair = try NaclSign.KeyPair.keyPair()
-        return try KeyPairEd25519(secretKey: newKeyPair.secretKey.base58Encoded)
+        return try KeyPairEd25519(secretKey: newKeyPair.secretKey.bytes.base58EncodedString)
     }
     
     public func getPublicKey() -> PublicKey {
@@ -50,7 +52,8 @@ public struct KeyPairEd25519: KeyPair, CustomStringConvertible {
     }
     
     public func sign(message: Data) throws -> Signature {
-        guard let bs58Data = secretKey.base58Decoded else { throw NearError.keyError("Unknown key:\(secretKey)") }
+        let bs58Data = secretKey.base58DecodedData
+        guard !bs58Data.isEmpty else { throw NearError.keyError("Unknown key:\(secretKey)") }
         let signature = try NaclSign.signDetached(message: message, secretKey: bs58Data)
         return Signature(data: signature, keyType: publicKey.keyType)
     }
@@ -69,20 +72,21 @@ public struct KeyPairSecp256k1: KeyPair, CustomStringConvertible {
     private let secretKey: String
     
     public init(secretKey: String) throws {
-        guard let _keyData = secretKey.base58Decoded else { throw NearError.keyError("Unknown key:\(secretKey)") }
-        try self.init(secretKey: _keyData)
+        let secretKeyData = secretKey.base58DecodedData
+        guard !secretKeyData.isEmpty else { throw NearError.keyError("Unknown key:\(secretKey)") }
+        try self.init(secretKey: secretKeyData)
     }
     
     public init(secretKey: Data) throws {
-        guard SECP256K1.verifyPrivateKey(privateKey: secretKey) else { throw NearError.keyError("Unknown key:\(secretKey.base58Encoded)") }
-        guard let pubKey = SECP256K1.privateToPublic(privateKey: secretKey, compressed: false) else { throw NearError.keyError("Unknown key:\(secretKey.base58Encoded)") }
+        guard SECP256K1.verifyPrivateKey(privateKey: secretKey) else { throw NearError.keyError("Unknown key:\(secretKey.bytes.base58EncodedString)") }
+        guard let pubKey = SECP256K1.privateToPublic(privateKey: secretKey, compressed: false) else { throw NearError.keyError("Unknown key:\(secretKey.bytes.base58EncodedString)") }
         self.publicKey = try PublicKey(keyType: .SECP256k1, data: pubKey.subdata(in: 1..<pubKey.count))
-        self.secretKey = secretKey.base58Encoded
+        self.secretKey = secretKey.bytes.base58EncodedString
     }
     
     public static func fromRandom() throws -> Self {
         guard let privateKey = SECP256K1.generatePrivateKey() else { throw NearError.notExpected }
-        return try KeyPairSecp256k1(secretKey: privateKey.base58Encoded)
+        return try KeyPairSecp256k1(secretKey: privateKey.bytes.base58EncodedString)
     }
     
     public func getPublicKey() -> PublicKey {
@@ -94,7 +98,8 @@ public struct KeyPairSecp256k1: KeyPair, CustomStringConvertible {
     }
     
     public func sign(message: Data) throws -> Signature {
-        guard let privateKey = secretKey.base58Decoded else { throw NearError.keyError("Unknown key:\(secretKey)") }
+        let privateKey = secretKey.base58DecodedData
+        guard !privateKey.isEmpty else { throw NearError.keyError("Unknown key:\(secretKey)") }
         let (serializedSignature, _) = SECP256K1.signForRecovery(hash: message, privateKey: privateKey, useExtraVer: false)
         guard let signature = serializedSignature else { throw NearError.keyError(secretKey) }
         return Signature(data: signature, keyType: publicKey.keyType)

@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Base58Swift
 @testable import NearSwift
 
 class NearSwiftTransactionTests: XCTestCase {
@@ -27,7 +28,7 @@ class NearSwiftTransactionTests: XCTestCase {
             .deleteKey(DeleteKey(publicKey: publicKey)),
             .deleteAccount(DeleteAccount(beneficiaryId: "123"))
         ]
-        let blockHash = "244ZQ9cgj3CQ6bWBdytfrJMuMQ1jdXLFGnr4HhvtCTnM".base58Decoded!
+        let blockHash = "244ZQ9cgj3CQ6bWBdytfrJMuMQ1jdXLFGnr4HhvtCTnM".base58DecodedData
         let transaction = Transaction(signerId: "test.near",
                                       publicKey: publicKey,
                                       nonce: 1,
@@ -50,16 +51,16 @@ class NearSwiftTransactionTests: XCTestCase {
             .deleteKey(DeleteKey(publicKey: publicKey)),
             .deleteAccount(DeleteAccount(beneficiaryId: "123"))
         ]
-        let blockHash = "244ZQ9cgj3CQ6bWBdytfrJMuMQ1jdXLFGnr4HhvtCTnM".base58Decoded!
+        let blockHash = "244ZQ9cgj3CQ6bWBdytfrJMuMQ1jdXLFGnr4HhvtCTnM".base58DecodedData
         let transaction = Transaction(signerId: "test.near",
                                       publicKey: publicKey,
                                       nonce: 1,
                                       receiverId: "123",
                                       blockHash: BlockHash(data: blockHash),
                                       actions: actions)
-        XCTAssertEqual(try transaction.txHash().base58Encoded, "Fo3MJ9XzKjnKuDuQKhDAC6fra5H2UWawRejFSEpPNk3Y")
+        XCTAssertEqual(try transaction.txHash().bytes.base58EncodedString, "Fo3MJ9XzKjnKuDuQKhDAC6fra5H2UWawRejFSEpPNk3Y")
         let signedTransaction = try transaction.sign(keyPair)
-        XCTAssertEqual(signedTransaction.signature.data.base58Encoded, "5TYcQFtqP9PqEHmmyARwi65adQoaAtz6zJyNioXnwxuizQsz9GUkWDef3j1MkLX3p8BfYGsH9nAFTXiY7S528L7K")
+        XCTAssertEqual(signedTransaction.signature.data.bytes.base58EncodedString, "5TYcQFtqP9PqEHmmyARwi65adQoaAtz6zJyNioXnwxuizQsz9GUkWDef3j1MkLX3p8BfYGsH9nAFTXiY7S528L7K")
     }
     
     func testSendTransactionExample() throws {

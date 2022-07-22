@@ -6,16 +6,18 @@
 //
 
 import Foundation
+import Base58Swift
 
 public struct BlockHash: BorshCodable, CustomStringConvertible {
     public static let fixedLength: Int = 32
     public let data: Data
     
     public init(encodedString: String) throws {
-        guard let _data = encodedString.base58Decoded else {
+        let data = encodedString.base58DecodedData
+        guard !data.isEmpty else {
             throw NearError.decodingError
         }
-        self.data = _data
+        self.data = data
     }
     public init(data: Data) {
       self.data = data
@@ -30,6 +32,6 @@ public struct BlockHash: BorshCodable, CustomStringConvertible {
     }
     
     public var description: String {
-        return data.base58Encoded
+        return data.bytes.base58EncodedString
     }
 }
