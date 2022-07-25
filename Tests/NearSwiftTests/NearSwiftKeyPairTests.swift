@@ -51,4 +51,19 @@ final class NearSwiftKeyPairTests: XCTestCase {
         XCTAssertTrue(pubKey3 == pubKey4)
     }
     
+    func testbase64Example() throws {
+        let sss = ["account_id":"sleeperhodl.near"] as [String : Any]
+        let data = try JSONSerialization.data(withJSONObject: sss)
+        let string = data.base64EncodedString()
+        print(string)
+        let results:Array<UInt8> = [
+            34,
+                        50,
+                        54,
+                        34
+        ]
+        let datas = Data(results)
+        let strings = String(data: datas, encoding: .utf8)
+        print(strings!)
+    }
 }
