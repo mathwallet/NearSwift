@@ -15,40 +15,39 @@ struct CollectibleResult:Codable {
 }
 
 public struct CollectibleMetadata:Codable {
-    let spec:String
-    let name:String
-    let symbol:String
-    let icon:String
-    let baseUri:String
+    public let spec:String
+    public let name:String
+    public let symbol:String
+    public let icon:String
+    public let baseUri:String
 }
 
 public struct CollectibleTokenId:Codable {
-    let tokenId:String
-    let ownerId:String
-    let metadata:CollectibleTokenMetadata
+    public let tokenId:String
+    public let ownerId:String
+    public let metadata:CollectibleTokenMetadata
 }
 
 public struct CollectibleTokenMetadata:Codable {
-    let title:String
-    let media:String
-    let reference:String
-    let issuedAt:String
+    public  let title:String
+    public let media:String
+    public let reference:String
+    public let issuedAt:String
 }
 
 public struct CollectibleTokenDescription:Codable {
-    let description:String
-    let collection:String
-    let collectionId:String
+    public let description:String
+    public let collection:String
+    public let collectionId:String
 }
 
 public struct NearCollectible {
-    let name:String
-    let symbol:String
-    let description:String
-    let collectionId:String
-    let ownerId:String
-    let number:String
-    let icon:String
+    public let name:String
+    public let symbol:String
+    public let description:String
+    public let collectionId:String
+    public let ownerId:String
+    public let icon:String
 }
 
 
