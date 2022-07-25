@@ -61,7 +61,7 @@ public final class Collectible {
       self.accountId = accountId
     }
     
-    public func query<T: Decodable>(contractName:String,methodName:String,args:[String: Any]) -> Promise<T> {
+    func query<T: Decodable>(contractName:String,methodName:String,args:[String: Any]) -> Promise<T> {
         let (promise,seal) = Promise<T>.pending()
         let data = try! JSONSerialization.data(withJSONObject: args)
         let base64Args = data.base64EncodedString()
