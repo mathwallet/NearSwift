@@ -22,20 +22,20 @@ public struct CollectibleMetadata:Codable {
     let baseUri:String
 }
 
-struct CollectibleTokenId:Codable {
+public struct CollectibleTokenId:Codable {
     let tokenId:String
     let ownerId:String
     let metadata:CollectibleTokenMetadata
 }
 
-struct CollectibleTokenMetadata:Codable {
+public struct CollectibleTokenMetadata:Codable {
     let title:String
     let media:String
     let reference:String
     let issuedAt:String
 }
 
-struct CollectibleTokenDescription:Codable {
+public struct CollectibleTokenDescription:Codable {
     let description:String
     let collection:String
     let collectionId:String
@@ -98,17 +98,17 @@ public final class Collectible {
         return self.query(contractName: contractName, methodName: "nft_metadata", args: args)
     }
     
-    func getTokenIds(contractName:String,fromIndex:String) -> Promise<[CollectibleTokenId]> {
+    public func getTokenIds(contractName:String,fromIndex:String) -> Promise<[CollectibleTokenId]> {
         let args = ["account_id":self.accountId,"from_index":fromIndex,"limit":4] as [String : Any]
         return self.query(contractName: contractName, methodName:"nft_tokens_for_owner" , args: args)
     }
     
-    func getNumberOfTokens(contractName:String) -> Promise<String> {
+    public func getNumberOfTokens(contractName:String) -> Promise<String> {
         let args = ["account_id":self.accountId] as [String : Any]
         return self.query(contractName: contractName, methodName: "nft_supply_for_owner", args: args)
     }
     
-    func getDescription(path:String) -> Promise<CollectibleTokenDescription> {
+    public func getDescription(path:String) -> Promise<CollectibleTokenDescription> {
         return self.GET(url: path)
     }
     
