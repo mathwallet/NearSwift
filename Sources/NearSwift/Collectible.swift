@@ -107,8 +107,8 @@ public final class Collectible {
         return self.query(contractName: contractName, methodName: "nft_supply_for_owner", args: args)
     }
     
-    public func getDescription(path:String) -> Promise<CollectibleTokenDescription> {
-        return self.GET(url: path)
+    public func getDescription(baseUrl:String,reference:String) -> Promise<CollectibleTokenDescription> {
+        return self.GET(url: "\(baseUrl)\(reference)")
     }
     
     public func GET<T: Codable>(url:String,headers:[String:String]? = nil) -> Promise<T>  {
