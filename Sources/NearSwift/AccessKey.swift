@@ -83,7 +83,7 @@ public enum AccessKeyPermission {
     case functionCall(FunctionCallPermission)
     case fullAccess(FullAccessPermission)
     
-    var rawValue: UInt8 {
+    public var rawValue: UInt8 {
         switch self {
         case .functionCall: return 0
         case .fullAccess: return 1
