@@ -15,7 +15,7 @@ class NearSwiftProviderTests: XCTestCase {
     static let network = Network(name: "testnet", chainId: "testnet")
     //  https://rpc.mainnet.near.org
     //  https://rpc.testnet.near.org
-    static let url = URL(string: "https://rpc.mainnet.near.org")!
+    static let url = URL(string: "https://rpc.testnet.near.org")!
     static let provider = JSONRPCProvider(url: url, network: network)
 
     
