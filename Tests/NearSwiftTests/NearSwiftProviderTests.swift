@@ -31,7 +31,7 @@ class NearSwiftProviderTests: XCTestCase {
                 
                 reqeustExpectation.fulfill()
             } catch let error {
-                debugPrint(error.localizedDescription)
+                //debugPrint(error.localizedDescription)
                 reqeustExpectation.fulfill()
             }
         }
@@ -49,7 +49,7 @@ class NearSwiftProviderTests: XCTestCase {
                 reqeustExpectation.fulfill()
             } catch let error {
                 XCTAssertTrue(false)
-                debugPrint(error.localizedDescription)
+                //debugPrint(error.localizedDescription)
                 reqeustExpectation.fulfill()
             }
         }

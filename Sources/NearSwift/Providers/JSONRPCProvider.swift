@@ -56,14 +56,14 @@ extension JSONRPCProvider {
         var task: URLSessionTask? = nil
         queue.async {
             do {
-                debugPrint("POST \(url)")
+                //debugPrint("POST \(url)")
                 var urlRequest = URLRequest(url: url, cachePolicy: URLRequest.CachePolicy.reloadIgnoringCacheData)
                 urlRequest.httpMethod = parameters.flatMap {_ in "POST"} ?? "GET"
                 urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
                 urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
                 if let p = parameters {
                     urlRequest.httpBody = try JSONSerialization.data(withJSONObject: p)
-                    debugPrint(p)
+                    //debugPrint(p)
                 }
                 task = session.dataTask(with: urlRequest){ (data, response, error) in
                     guard error == nil else {
@@ -84,7 +84,7 @@ extension JSONRPCProvider {
         return rp.promise.ensure(on: queue) {
                 task = nil
             }.map(on: queue){ (data: Data) throws -> T in
-                debugPrint(try JSONDecoder().decode(AnyDecodable.self, from: data).value)
+                //debugPrint(try JSONDecoder().decode(AnyDecodable.self, from: data).value)
                 
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase

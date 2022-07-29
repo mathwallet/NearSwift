@@ -35,7 +35,7 @@ class NearSwiftTransactionTests: XCTestCase {
                                       receiverId: "123",
                                       blockHash: BlockHash(data: blockHash),
                                       actions: actions)
-        debugPrint(transaction.toHuman())
+        //debugPrint(transaction.toHuman())
     }
     
     func testSignTransactionExample() throws {
@@ -83,14 +83,14 @@ class NearSwiftTransactionTests: XCTestCase {
                                               receiverId: account.accountId,
                                               blockHash: blockHash,
                                               actions: actions)
-                debugPrint(transaction)
+                //debugPrint(transaction)
                 let signedTransaction = try transaction.sign(keyPair)
                 let result = try account.provider.sendTransactionAsync(signedTransaction: signedTransaction).wait()
-                debugPrint(result)
+                //debugPrint(result)
                 reqeustExpectation.fulfill()
             } catch let error {
                 XCTAssertTrue(false)
-                debugPrint(error)
+                //debugPrint(error)
                 reqeustExpectation.fulfill()
             }
         }
