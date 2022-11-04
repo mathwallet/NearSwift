@@ -15,7 +15,7 @@ class NearSwiftProviderTests: XCTestCase {
     static let network = Network(name: "testnet", chainId: "testnet")
     //  https://rpc.mainnet.near.org
     //  https://rpc.testnet.near.org
-    static let url = URL(string: "https://rpc.testnet.near.org")!
+    static let url = URL(string: "https://rpc.mainnet.near.org")!
     static let provider = JSONRPCProvider(url: url, network: network)
 
     
@@ -61,7 +61,7 @@ class NearSwiftProviderTests: XCTestCase {
         let account = Account(provider: Self.provider, accountId: "mathtest.near")
         DispatchQueue.global().async {
             do {
-                let result:[String] = try account.viewFunction(contractId: "v2.ref-finance.near", methodName: "get_user_whitelisted_tokens", args: ["account_id": account.accountId]).wait()
+                let result:String? = try account.viewFunction(contractId: "wrap.near", methodName: "storage_balance_of", args: ["account_id": account.accountId]).wait()
                 reqeustExpectation.fulfill()
             } catch let error {
                 XCTAssertTrue(false)

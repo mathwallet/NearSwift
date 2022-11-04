@@ -103,8 +103,8 @@ public final class Account {
                 let resultData = Data(result.result)
                 let decodedResult = try decoder.decode(T.self, from: resultData)
                 seal.fulfill(decodedResult)
-            } catch {
-                seal.reject(NearError.providerError("decode error"))
+            } catch let error {
+                seal.reject(error)
             }
         }.catch { error in
             seal.reject(error)
