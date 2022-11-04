@@ -49,7 +49,23 @@ class NearSwiftProviderTests: XCTestCase {
                 reqeustExpectation.fulfill()
             } catch let error {
                 XCTAssertTrue(false)
-                //debugPrint(error.localizedDescription)
+                debugPrint(error.localizedDescription)
+                reqeustExpectation.fulfill()
+            }
+        }
+        wait(for: [reqeustExpectation], timeout: 30)
+    }
+    
+    func testAccountTokenExamples() throws {
+        let reqeustExpectation = expectation(description: "Tests")
+        let account = Account(provider: Self.provider, accountId: "mathtest.near")
+        DispatchQueue.global().async {
+            do {
+                let result:[String] = try account.viewFunction(contractId: "v2.ref-finance.near", methodName: "get_user_whitelisted_tokens", args: ["account_id": account.accountId]).wait()
+                reqeustExpectation.fulfill()
+            } catch let error {
+                XCTAssertTrue(false)
+                debugPrint(error.localizedDescription)
                 reqeustExpectation.fulfill()
             }
         }
