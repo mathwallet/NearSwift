@@ -58,10 +58,9 @@ class NearSwiftProviderTests: XCTestCase {
     
     func testAccountTokenExamples() throws {
         let reqeustExpectation = expectation(description: "Tests")
-        let account = Account(provider: Self.provider, accountId: "mathtest.near")
         DispatchQueue.global().async {
             do {
-                let result:String? = try account.viewFunction(contractId: "wrap.near", methodName: "storage_balance_of", args: ["account_id": account.accountId]).wait()
+                let result:String? = try Self.provider.viewFunction(contractId: "wrap.near", methodName: "storage_balance_of", args: ["account_id": account.accountId]).wait()
                 reqeustExpectation.fulfill()
             } catch let error {
                 XCTAssertTrue(false)
@@ -69,7 +68,7 @@ class NearSwiftProviderTests: XCTestCase {
                 reqeustExpectation.fulfill()
             }
         }
-        wait(for: [reqeustExpectation], timeout: 30)
+        wait(for: [reqeustExpectation], timeout: 60)
     }
 
 }

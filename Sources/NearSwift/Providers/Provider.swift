@@ -279,6 +279,10 @@ public struct TransactionResult: Codable, Equatable {
     public let publicKey: String
     public let signature: String
 }
+public struct QueryResult: Codable {
+    public let logs: [String]
+    public let result: [UInt8]
+}
 
 public struct BlockResult: Codable {
     public let header: BlockHeader
