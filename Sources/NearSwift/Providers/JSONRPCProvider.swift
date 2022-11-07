@@ -254,30 +254,4 @@ extension JSONRPCProvider: Provider {
 
         return sendJsonRpc(method: "EXPERIMENTAL_changes", paramsDict: params)
     }
-    
-    public func viewFunction<T: Decodable>(contractId: String, methodName: String, args: [String: Any] = [:], decodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys) -> Promise<T> {
-        let (promise, seal) = Promise<T>.pending()
-        let data = try! JSONSerialization.data(withJSONObject: args).base64EncodedString()
-        let params = [
-            "request_type": "call_function",
-            "finality": Finality.optimistic.rawValue,
-            "account_id": contractId,
-            "method_name": methodName,
-            "args_base64": data
-        ]
-        self.query(params: params).done { (result: QueryResult) in
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            do {
-                let resultData = Data(result.result)
-                let decodedResult = try decoder.decode(T.self, from: resultData)
-                seal.fulfill(decodedResult)
-            } catch let error {
-                seal.reject(error)
-            }
-        }.catch { error in
-            seal.reject(error)
-        }
-        return promise
-    }
 }

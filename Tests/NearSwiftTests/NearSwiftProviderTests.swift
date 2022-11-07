@@ -55,20 +55,5 @@ class NearSwiftProviderTests: XCTestCase {
         }
         wait(for: [reqeustExpectation], timeout: 30)
     }
-    
-    func testAccountTokenExamples() throws {
-        let reqeustExpectation = expectation(description: "Tests")
-        DispatchQueue.global().async {
-            do {
-                let result:String? = try Self.provider.viewFunction(contractId: "wrap.near", methodName: "storage_balance_of", args: ["account_id": account.accountId]).wait()
-                reqeustExpectation.fulfill()
-            } catch let error {
-                XCTAssertTrue(false)
-                debugPrint(error.localizedDescription)
-                reqeustExpectation.fulfill()
-            }
-        }
-        wait(for: [reqeustExpectation], timeout: 60)
-    }
 
 }

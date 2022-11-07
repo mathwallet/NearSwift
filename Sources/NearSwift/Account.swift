@@ -29,6 +29,11 @@ public struct AccountAccessKeyList: Decodable {
     public let keys: [AccountAccessKey]
 }
 
+public struct QueryResult: Codable {
+    public let logs: [String]
+    public let result: [UInt8]
+}
+
 public struct AccountBalance {
     public let total: String
     public let stateStaked: String
@@ -71,6 +76,32 @@ public final class Account {
             "account_id": accountId
         ]
         return provider.query(params: params)
+    }
+    
+    public func viewFunction<T: Decodable>(contractId: String, methodName: String, args: [String: Any] = [:], decodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys) -> Promise<T> {
+        let (promise, seal) = Promise<T>.pending()
+        let data = try! JSONSerialization.data(withJSONObject: args).base64EncodedString()
+        let params = [
+            "request_type": "call_function",
+            "finality": Finality.optimistic.rawValue,
+            "account_id": contractId,
+            "method_name": methodName,
+            "args_base64": data
+        ]
+        provider.query(params: params).done { (result: QueryResult) in
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            do {
+                let resultData = Data(result.result)
+                let decodedResult = try decoder.decode(T.self, from: resultData)
+                seal.fulfill(decodedResult)
+            } catch let error {
+                seal.reject(error)
+            }
+        }.catch { error in
+            seal.reject(error)
+        }
+        return promise
     }
     
     public func balance() -> Promise<AccountBalance> {
