@@ -39,6 +39,16 @@ public struct AccountBalance: Codable {
     public let stateStaked: String?
     public let staked: String?
     public let available: String
+    
+    public init(total: String,
+                stateStaked: String,
+                staked: String,
+                available: String) {
+        self.total = total
+        self.stateStaked = stateStaked
+        self.staked = staked
+        self.available = available
+    }
 }
 
 public final class Account {
