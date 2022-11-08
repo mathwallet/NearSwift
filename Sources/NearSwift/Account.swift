@@ -34,7 +34,7 @@ public struct QueryResult: Codable {
     public let result: [UInt8]
 }
 
-public struct AccountBalance {
+public struct AccountBalance: Codable {
     public let total: String
     public let stateStaked: String?
     public let staked: String?
