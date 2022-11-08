@@ -36,8 +36,8 @@ public struct QueryResult: Codable {
 
 public struct AccountBalance {
     public let total: String
-    public let stateStaked: String
-    public let staked: String
+    public let stateStaked: String?
+    public let staked: String?
     public let available: String
 }
 
