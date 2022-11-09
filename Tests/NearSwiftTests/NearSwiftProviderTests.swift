@@ -56,4 +56,19 @@ class NearSwiftProviderTests: XCTestCase {
         wait(for: [reqeustExpectation], timeout: 30)
     }
 
+    func testTokenBalanceExamples() throws {
+        let reqeustExpectation = expectation(description: "Tests")
+        let account = Account(provider: Self.provider, accountId: "methtest.near")
+        DispatchQueue.global().async {
+            do {
+                let result:NearSwift.AccountBalance? = try account.viewFunction(contractId: "wrap.near", methodName: "storage_balance_of", args: ["account_id": "mathtest.near"]).wait()
+                reqeustExpectation.fulfill()
+            } catch let error {
+                XCTAssertTrue(false)
+//                debugPrint(error.localizedDescription)
+                reqeustExpectation.fulfill()
+            }
+        }
+        wait(for: [reqeustExpectation], timeout: 30)
+    }
 }
