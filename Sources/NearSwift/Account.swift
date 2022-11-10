@@ -134,8 +134,12 @@ public final class Account {
 
 extension Account {
     public func transfer(publicKey: PublicKey, amount: String, receiverId: String) -> Promise<Transaction> {
-        let (promise, seal) = Promise<Transaction>.pending()
         let action = Action.transfer(Transfer(deposit: UInt128(stringLiteral: amount)))
+        return configTransaction(actions: [action], publicKey: publicKey, receiverId: receiverId)
+    }
+    
+    public func configTransaction(actions: [Action], publicKey: PublicKey, receiverId: String) -> Promise<Transaction> {
+        let (promise, seal) = Promise<Transaction>.pending()
         firstly {
             when(
                 fulfilled: self.viewAccessKeyList(),
