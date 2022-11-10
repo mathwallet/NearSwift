@@ -56,8 +56,8 @@ public final class Account {
     public let accountId: String
     
     public init(provider: Provider, accountId: String) {
-      self.provider = provider
-      self.accountId = accountId
+        self.provider = provider
+        self.accountId = accountId
     }
     
     public func viewState() -> Promise<AccountState> {
@@ -133,7 +133,7 @@ public final class Account {
 }
 
 extension Account {
-    func transfer(publicKey: PublicKey, actions: [Action], receiverId: String) -> Promise<Transaction> {
+    public func transfer(publicKey: PublicKey, actions: [Action], receiverId: String) -> Promise<Transaction> {
         let (promise, seal) = Promise<Transaction>.pending()
         firstly {
             when(
