@@ -133,8 +133,9 @@ public final class Account {
 }
 
 extension Account {
-    public func transfer(publicKey: PublicKey, actions: [Action], receiverId: String) -> Promise<Transaction> {
+    public func transfer(publicKey: PublicKey, amount: String, receiverId: String) -> Promise<Transaction> {
         let (promise, seal) = Promise<Transaction>.pending()
+        let action = Action.transfer(Transfer(deposit: UInt128(stringLiteral: amount)))
         firstly {
             when(
                 fulfilled: self.viewAccessKeyList(),
@@ -151,7 +152,7 @@ extension Account {
                                           nonce: nonce,
                                           receiverId: receiverId,
                                           blockHash: blockHash,
-                                          actions: actions)
+                                          actions: [action])
             seal.fulfill(transaction)
         }.catch { error in
             seal.reject(error)
