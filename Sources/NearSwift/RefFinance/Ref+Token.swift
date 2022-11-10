@@ -47,20 +47,20 @@ extension Ref.Token {
         }
         let argsData = try! JSONSerialization.data(withJSONObject: args)
         let storageAction = Action.functionCall(FunctionCall(methodName: "storage_deposit", args: argsData.bytes, gas: Ref.Storage.REGISTER_ATTACHED_GAS, deposit: UInt128(stringLiteral: Ref.Storage.REGISTER_TOKEN_COST_NEAR)))
-        return configTransaction(account: account, publicKey: publicKey, actions: [storageAction], receiverId: contractId)
+        return configTransaction(publicKey: publicKey, actions: [storageAction], receiverId: contractId)
     }
     
-    public func transfer(account: Account, publicKey: PublicKey, receiverId: String, amount: String) -> Promise<Transaction> {
+    public func transfer(publicKey: PublicKey, receiverId: String, amount: String) -> Promise<Transaction> {
         let args = [
             "receiver_id": receiverId,
             "amount": amount
         ]
         let argsData = try! JSONSerialization.data(withJSONObject: args)
         let action = Action.functionCall(FunctionCall(methodName: "ft_transfer", args: argsData.bytes, gas: TRANSFER_TOKEN_GAS, deposit: UInt128(stringLiteral: ONE_YOCTO_NEAR)))
-        return configTransaction(account: account, publicKey: publicKey, actions: [action], receiverId: receiverId)
+        return configTransaction(publicKey: publicKey, actions: [action], receiverId: receiverId)
     }
     
-    public func registAndTranfer(account: Account, publicKey: PublicKey, receiverId: String, amount: String) -> Promise<Transaction> {
+    public func registAndTranfer( publicKey: PublicKey, receiverId: String, amount: String) -> Promise<Transaction> {
         let registArg: [String : Any] = [
             "account_id": receiverId,
             "registration_only": true
@@ -73,15 +73,15 @@ extension Ref.Token {
         ]
         let transferArgsData = try! JSONSerialization.data(withJSONObject: args)
         let transferAction = Action.functionCall(FunctionCall(methodName: "ft_transfer", args: transferArgsData.bytes, gas: TRANSFER_TOKEN_GAS, deposit: UInt128(stringLiteral: ONE_YOCTO_NEAR)))
-        return configTransaction(account: account, publicKey: publicKey, actions: [registAction, transferAction], receiverId: receiverId)
+        return configTransaction(publicKey: publicKey, actions: [registAction, transferAction], receiverId: receiverId)
     }
     
-    func configTransaction(account: Account, publicKey: PublicKey, actions: [Action], receiverId: String) -> Promise<Transaction> {
+    func configTransaction(publicKey: PublicKey, actions: [Action], receiverId: String) -> Promise<Transaction> {
         let (promise, seal) = Promise<Transaction>.pending()
         firstly {
             when(
-                fulfilled: account.viewAccessKeyList(),
-                account.viewState()
+                fulfilled: self.account.viewAccessKeyList(),
+                self.account.viewState()
             )
         }.done { accountAccessKeyList, accountState in
             var nonce: UInt64 = 0
@@ -89,7 +89,7 @@ extension Ref.Token {
                 nonce = _nonce + 1
             }
             let blockHash = try BlockHash(encodedString: accountState.blockHash)
-            let transaction = Transaction(signerId: account.accountId,
+            let transaction = Transaction(signerId: self.account.accountId,
                                           publicKey: publicKey,
                                           nonce: nonce,
                                           receiverId: receiverId,
