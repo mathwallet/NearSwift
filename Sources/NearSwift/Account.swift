@@ -131,3 +131,31 @@ public final class Account {
         }
     }
 }
+
+extension Account {
+    func transfer(publicKey: PublicKey, actions: [Action], receiverId: String) -> Promise<Transaction> {
+        let (promise, seal) = Promise<Transaction>.pending()
+        firstly {
+            when(
+                fulfilled: self.viewAccessKeyList(),
+                self.viewState()
+            )
+        }.done { accountAccessKeyList, accountState in
+            var nonce: UInt64 = 0
+            if let _nonce = accountAccessKeyList.keys.filter({$0.publicKey == publicKey}).first?.accessKey.nonce  {
+                nonce = _nonce + 1
+            }
+            let blockHash = try BlockHash(encodedString: accountState.blockHash)
+            let transaction = Transaction(signerId: self.accountId,
+                                          publicKey: publicKey,
+                                          nonce: nonce,
+                                          receiverId: receiverId,
+                                          blockHash: blockHash,
+                                          actions: actions)
+            seal.fulfill(transaction)
+        }.catch { error in
+            seal.reject(error)
+        }
+        return promise
+    }
+}
