@@ -156,7 +156,7 @@ extension Account {
                                           nonce: nonce,
                                           receiverId: receiverId,
                                           blockHash: blockHash,
-                                          actions: [action])
+                                          actions: actions)
             seal.fulfill(transaction)
         }.catch { error in
             seal.reject(error)
