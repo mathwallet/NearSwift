@@ -68,7 +68,7 @@ extension Ref.Token {
         let registArgData = try! JSONSerialization.data(withJSONObject: registArg)
         let registAction = Action.functionCall(FunctionCall(methodName: "storage_deposit", args: registArgData.bytes, gas: Ref.Storage.REGISTER_ATTACHED_GAS, deposit: UInt128(stringLiteral: Ref.Storage.REGISTER_TOKEN_COST_NEAR)))
         let args = [
-            "receiver_id": contractId,
+            "receiver_id": receiverId,
             "amount": amount
         ]
         let transferArgsData = try! JSONSerialization.data(withJSONObject: args)
