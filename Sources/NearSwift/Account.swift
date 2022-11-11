@@ -56,8 +56,8 @@ public final class Account {
     public let accountId: String
     
     public init(provider: Provider, accountId: String) {
-      self.provider = provider
-      self.accountId = accountId
+        self.provider = provider
+        self.accountId = accountId
     }
     
     public func viewState() -> Promise<AccountState> {
@@ -129,5 +129,38 @@ public final class Account {
             
             return AccountBalance(total: totalBalance.toString(), stateStaked: stateStaked.toString(), staked: staked.toString(), available: availableBalance.toString())
         }
+    }
+}
+
+extension Account {
+    public func transfer(publicKey: PublicKey, amount: String, receiverId: String) -> Promise<Transaction> {
+        let action = Action.transfer(Transfer(deposit: UInt128(stringLiteral: amount)))
+        return configTransaction(actions: [action], publicKey: publicKey, receiverId: receiverId)
+    }
+    
+    public func configTransaction(actions: [Action], publicKey: PublicKey, receiverId: String) -> Promise<Transaction> {
+        let (promise, seal) = Promise<Transaction>.pending()
+        firstly {
+            when(
+                fulfilled: self.viewAccessKeyList(),
+                self.viewState()
+            )
+        }.done { accountAccessKeyList, accountState in
+            var nonce: UInt64 = 0
+            if let _nonce = accountAccessKeyList.keys.filter({$0.publicKey == publicKey}).first?.accessKey.nonce  {
+                nonce = _nonce + 1
+            }
+            let blockHash = try BlockHash(encodedString: accountState.blockHash)
+            let transaction = Transaction(signerId: self.accountId,
+                                          publicKey: publicKey,
+                                          nonce: nonce,
+                                          receiverId: receiverId,
+                                          blockHash: blockHash,
+                                          actions: actions)
+            seal.fulfill(transaction)
+        }.catch { error in
+            seal.reject(error)
+        }
+        return promise
     }
 }
