@@ -30,7 +30,7 @@ class NearSwiftProviderTests: XCTestCase {
                 XCTAssertEqual(status.chainId, network.chainId)
                 
                 reqeustExpectation.fulfill()
-            } catch let error {
+            } catch {
                 //debugPrint(error.localizedDescription)
                 reqeustExpectation.fulfill()
             }
@@ -47,7 +47,7 @@ class NearSwiftProviderTests: XCTestCase {
                 let _ = try account.viewAccessKeyList().wait()
                 let _ = try account.balance().wait()
                 reqeustExpectation.fulfill()
-            } catch let error {
+            } catch {
                 XCTAssertTrue(false)
 //                debugPrint(error.localizedDescription)
                 reqeustExpectation.fulfill()
@@ -63,7 +63,7 @@ class NearSwiftProviderTests: XCTestCase {
             do {
                 let result:NearSwift.AccountBalance? = try account.viewFunction(contractId: "wrap.near", methodName: "storage_balance_of", args: ["account_id": "mathtest.near"]).wait()
                 reqeustExpectation.fulfill()
-            } catch let error {
+            } catch {
                 XCTAssertTrue(false)
 //                debugPrint(error.localizedDescription)
                 reqeustExpectation.fulfill()

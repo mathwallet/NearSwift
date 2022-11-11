@@ -88,7 +88,7 @@ class NearSwiftTransactionTests: XCTestCase {
                 let result = try account.provider.sendTransactionAsync(signedTransaction: signedTransaction).wait()
                 //debugPrint(result)
                 reqeustExpectation.fulfill()
-            } catch let error {
+            } catch {
                 XCTAssertTrue(false)
                 //debugPrint(error)
                 reqeustExpectation.fulfill()

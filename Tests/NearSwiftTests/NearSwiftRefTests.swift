@@ -23,7 +23,7 @@ final class NearSwiftRefTests: XCTestCase {
                 let isRegist = try token.isRegist(contractId: "wrap.near").wait()
                 let tokenbalance = try token.balance(contractId: "wrap.near").wait()
                 print(isRegist,tokenbalance)
-            } catch let error {
+            } catch {
                 XCTAssertTrue(false)
                 //debugPrint(error)
                 reqeustExpectation.fulfill()
