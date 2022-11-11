@@ -19,6 +19,10 @@ public struct JSONRPCHandlerError: Decodable {
     public let code: Int
     public let message: String
     public let data: AnyCodable
+    
+    public var description: String {
+        data.description
+    }
 }
 
 public enum Finality: String, Codable {
@@ -100,7 +104,7 @@ extension JSONRPCProvider {
                 }
                 if let json = result?["error"], let processData = try? JSONSerialization.data(withJSONObject: json) {
                     let decoded = try decoder.decode(JSONRPCHandlerError.self, from: processData)
-                    throw NearError.providerError("\(decoded.message)")
+                    throw NearError.providerError("\(decoded.description)")
                 }
                 throw NearError.providerError("Node response is empty")
             }
