@@ -124,7 +124,7 @@ public final class Account {
             let costPerByte = UInt128(stringLiteral: storageAmountPerByte)
             let stateStaked = UInt128(integerLiteral: UInt64(state.storageUsage)) * costPerByte
             let staked = UInt128(stringLiteral: state.locked)
-            let totalBalance = UInt128(stringLiteral: state.amount) + staked
+            let totalBalance = UInt128(stringLiteral: state.amount) + max(staked, stateStaked)
             let availableBalance = totalBalance - max(staked, stateStaked)
             
             return AccountBalance(total: totalBalance.toString(), stateStaked: stateStaked.toString(), staked: staked.toString(), available: availableBalance.toString())
