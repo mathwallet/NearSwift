@@ -19,7 +19,7 @@ let package = Package(
         .package(name: "Secp256k1Swift", url: "https://github.com/mathwallet/Secp256k1Swift.git", from: "2.0.0"),
         .package(name: "Base58Swift", url: "https://github.com/mathwallet/Base58Swift.git", from: "0.0.1"),
         .package(name: "TweetNacl", url: "https://github.com/lishuailibertine/tweetnacl-swiftwrap", from: "1.0.3"),
-        .package(url: "https://github.com/Flight-School/AnyCodable.git", .exact("0.6.1")),
+        .package(url: "https://github.com/Flight-School/AnyCodable.git", from: "0.6.1"),
         .package(url: "https://github.com/mxcl/PromiseKit.git", from: "8.1.1")
     ],
     targets: [
