@@ -10,7 +10,7 @@ import Base58Swift
 
 public struct BlockHash: BorshCodable, CustomStringConvertible {
     public static let fixedLength: Int = 32
-    public let data: Data
+    public var data: Data
     
     public init(encodedString: String) throws {
         let data = encodedString.base58DecodedData
@@ -24,7 +24,7 @@ public struct BlockHash: BorshCodable, CustomStringConvertible {
     }
     
     public func serialize(to writer: inout Data) throws {
-        writer.append(data.bytes, count: Self.fixedLength)
+        writer.append(data.byteArray, count: Self.fixedLength)
     }
     
     public init(from reader: inout BinaryReader) throws {
@@ -32,6 +32,6 @@ public struct BlockHash: BorshCodable, CustomStringConvertible {
     }
     
     public var description: String {
-        return data.bytes.base58EncodedString
+        return data.byteArray.base58EncodedString
     }
 }

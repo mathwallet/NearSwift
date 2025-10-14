@@ -61,7 +61,7 @@ class NearSwiftProviderTests: XCTestCase {
         let account = Account(provider: Self.provider, accountId: "methtest.near")
         DispatchQueue.global().async {
             do {
-                let result:NearSwift.AccountBalance? = try account.viewFunction(contractId: "wrap.near", methodName: "storage_balance_of", args: ["account_id": "mathtest.near"]).wait()
+                let _ :NearSwift.AccountBalance? = try account.viewFunction(contractId: "wrap.near", methodName: "storage_balance_of", args: ["account_id": "mathtest.near"]).wait()
                 reqeustExpectation.fulfill()
             } catch {
                 XCTAssertTrue(false)

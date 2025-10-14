@@ -15,7 +15,7 @@ public struct Signature {
 
 extension Signature: CustomStringConvertible {
     public var description: String {
-        return "\(keyType.rawValue):\(data.bytes.base58EncodedString)"
+        return "\(keyType.rawValue):\(data.byteArray.base58EncodedString)"
     }
 }
 
@@ -30,9 +30,9 @@ extension Signature: BorshCodable {
         try keyType.serialize(to: &writer)
         switch keyType {
         case .ED25519:
-            writer.append(data.bytes, count: 64)
+            writer.append(data.byteArray, count: 64)
         case .SECP256k1:
-            writer.append(data.bytes, count: 65)
+            writer.append(data.byteArray, count: 65)
         }
     }
 

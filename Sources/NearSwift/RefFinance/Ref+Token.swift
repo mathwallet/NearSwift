@@ -46,7 +46,7 @@ extension Ref.Token {
             ]
         }
         let argsData = try! JSONSerialization.data(withJSONObject: args)
-        let storageAction = Action.functionCall(FunctionCall(methodName: "storage_deposit", args: argsData.bytes, gas: Ref.Storage.REGISTER_ATTACHED_GAS, deposit: UInt128(stringLiteral: Ref.Storage.REGISTER_TOKEN_COST_NEAR)))
+        let storageAction = Action.functionCall(FunctionCall(methodName: "storage_deposit", args: argsData.byteArray, gas: Ref.Storage.REGISTER_ATTACHED_GAS, deposit: UInt128(stringLiteral: Ref.Storage.REGISTER_TOKEN_COST_NEAR)))
         return configTransaction(publicKey: publicKey, actions: [storageAction], receiverId: contractId)
     }
     
@@ -56,7 +56,7 @@ extension Ref.Token {
             "amount": amount
         ]
         let argsData = try! JSONSerialization.data(withJSONObject: args)
-        let action = Action.functionCall(FunctionCall(methodName: "ft_transfer", args: argsData.bytes, gas: TRANSFER_TOKEN_GAS, deposit: UInt128(stringLiteral: ONE_YOCTO_NEAR)))
+        let action = Action.functionCall(FunctionCall(methodName: "ft_transfer", args: argsData.byteArray, gas: TRANSFER_TOKEN_GAS, deposit: UInt128(stringLiteral: ONE_YOCTO_NEAR)))
         return configTransaction(publicKey: publicKey, actions: [action], receiverId: contractId)
     }
     
@@ -66,13 +66,13 @@ extension Ref.Token {
             "registration_only": true
         ]
         let registArgData = try! JSONSerialization.data(withJSONObject: registArg)
-        let registAction = Action.functionCall(FunctionCall(methodName: "storage_deposit", args: registArgData.bytes, gas: Ref.Storage.REGISTER_ATTACHED_GAS, deposit: UInt128(stringLiteral: Ref.Storage.REGISTER_TOKEN_COST_NEAR)))
+        let registAction = Action.functionCall(FunctionCall(methodName: "storage_deposit", args: registArgData.byteArray, gas: Ref.Storage.REGISTER_ATTACHED_GAS, deposit: UInt128(stringLiteral: Ref.Storage.REGISTER_TOKEN_COST_NEAR)))
         let args = [
             "receiver_id": receiverId,
             "amount": amount
         ]
         let transferArgsData = try! JSONSerialization.data(withJSONObject: args)
-        let transferAction = Action.functionCall(FunctionCall(methodName: "ft_transfer", args: transferArgsData.bytes, gas: TRANSFER_TOKEN_GAS, deposit: UInt128(stringLiteral: ONE_YOCTO_NEAR)))
+        let transferAction = Action.functionCall(FunctionCall(methodName: "ft_transfer", args: transferArgsData.byteArray, gas: TRANSFER_TOKEN_GAS, deposit: UInt128(stringLiteral: ONE_YOCTO_NEAR)))
         return configTransaction(publicKey: publicKey, actions: [registAction, transferAction], receiverId: contractId)
     }
     

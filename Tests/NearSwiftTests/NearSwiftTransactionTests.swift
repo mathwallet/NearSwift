@@ -58,9 +58,9 @@ class NearSwiftTransactionTests: XCTestCase {
                                       receiverId: "123",
                                       blockHash: BlockHash(data: blockHash),
                                       actions: actions)
-        XCTAssertEqual(try transaction.txHash().bytes.base58EncodedString, "Fo3MJ9XzKjnKuDuQKhDAC6fra5H2UWawRejFSEpPNk3Y")
+        XCTAssertEqual(try transaction.txHash().byteArray.base58EncodedString, "Fo3MJ9XzKjnKuDuQKhDAC6fra5H2UWawRejFSEpPNk3Y")
         let signedTransaction = try transaction.sign(keyPair)
-        XCTAssertEqual(signedTransaction.signature.data.bytes.base58EncodedString, "5TYcQFtqP9PqEHmmyARwi65adQoaAtz6zJyNioXnwxuizQsz9GUkWDef3j1MkLX3p8BfYGsH9nAFTXiY7S528L7K")
+        XCTAssertEqual(signedTransaction.signature.data.byteArray.base58EncodedString, "5TYcQFtqP9PqEHmmyARwi65adQoaAtz6zJyNioXnwxuizQsz9GUkWDef3j1MkLX3p8BfYGsH9nAFTXiY7S528L7K")
     }
     
     func testSendTransactionExample() throws {
@@ -85,7 +85,7 @@ class NearSwiftTransactionTests: XCTestCase {
                                               actions: actions)
                 //debugPrint(transaction)
                 let signedTransaction = try transaction.sign(keyPair)
-                let result = try account.provider.sendTransactionAsync(signedTransaction: signedTransaction).wait()
+                let _ = try account.provider.sendTransactionAsync(signedTransaction: signedTransaction).wait()
                 //debugPrint(result)
                 reqeustExpectation.fulfill()
             } catch {

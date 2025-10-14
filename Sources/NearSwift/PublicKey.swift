@@ -72,7 +72,7 @@ public struct PublicKey: CustomStringConvertible {
     }
     
     public var description: String {
-        return "\(keyType.rawValue):\(data.bytes.base58EncodedString)"
+        return "\(keyType.rawValue):\(data.byteArray.base58EncodedString)"
     }
 }
 
@@ -96,7 +96,7 @@ extension PublicKey: BorshCodable {
 
     public func serialize(to writer: inout Data) throws {
         try keyType.serialize(to: &writer)
-        writer.append(data.bytes, count: Int(keyType == .ED25519 ? 32 : 64))
+        writer.append(data.byteArray, count: Int(keyType == .ED25519 ? 32 : 64))
     }
 
     public init(from reader: inout BinaryReader) throws {

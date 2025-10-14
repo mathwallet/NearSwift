@@ -30,17 +30,17 @@ public struct KeyPairEd25519: KeyPair, CustomStringConvertible {
     public init(secretKey: Data) throws {
         let keyPair = try NaclSign.KeyPair.keyPair(fromSecretKey: secretKey)
         self.publicKey = try PublicKey(keyType: .ED25519, data: keyPair.publicKey)
-        self.secretKey = secretKey.bytes.base58EncodedString
+        self.secretKey = secretKey.byteArray.base58EncodedString
     }
     
     public static func fromSeed(seed: Data) throws -> Self {
         let newKeyPair = try NaclSign.KeyPair.keyPair(fromSeed: seed )
-        return try KeyPairEd25519(secretKey: newKeyPair.secretKey.bytes.base58EncodedString)
+        return try KeyPairEd25519(secretKey: newKeyPair.secretKey.byteArray.base58EncodedString)
     }
     
     public static func fromRandom() throws -> Self {
         let newKeyPair = try NaclSign.KeyPair.keyPair()
-        return try KeyPairEd25519(secretKey: newKeyPair.secretKey.bytes.base58EncodedString)
+        return try KeyPairEd25519(secretKey: newKeyPair.secretKey.byteArray.base58EncodedString)
     }
     
     public func getPublicKey() -> PublicKey {
@@ -78,15 +78,15 @@ public struct KeyPairSecp256k1: KeyPair, CustomStringConvertible {
     }
     
     public init(secretKey: Data) throws {
-        guard SECP256K1.verifyPrivateKey(privateKey: secretKey) else { throw NearError.keyError("Unknown key:\(secretKey.bytes.base58EncodedString)") }
-        guard let pubKey = SECP256K1.privateToPublic(privateKey: secretKey, compressed: false) else { throw NearError.keyError("Unknown key:\(secretKey.bytes.base58EncodedString)") }
+        guard SECP256K1.verifyPrivateKey(privateKey: secretKey) else { throw NearError.keyError("Unknown key:\(secretKey.byteArray.base58EncodedString)") }
+        guard let pubKey = SECP256K1.privateToPublic(privateKey: secretKey, compressed: false) else { throw NearError.keyError("Unknown key:\(secretKey.byteArray.base58EncodedString)") }
         self.publicKey = try PublicKey(keyType: .SECP256k1, data: pubKey.subdata(in: 1..<pubKey.count))
-        self.secretKey = secretKey.bytes.base58EncodedString
+        self.secretKey = secretKey.byteArray.base58EncodedString
     }
     
     public static func fromRandom() throws -> Self {
         guard let privateKey = SECP256K1.generatePrivateKey() else { throw NearError.notExpected }
-        return try KeyPairSecp256k1(secretKey: privateKey.bytes.base58EncodedString)
+        return try KeyPairSecp256k1(secretKey: privateKey.byteArray.base58EncodedString)
     }
     
     public func getPublicKey() -> PublicKey {

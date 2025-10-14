@@ -160,12 +160,12 @@ extension JSONRPCProvider: Provider {
     }
 
     public func txStatus(txHash: Data, accountId: String) -> Promise<FinalExecutionOutcome> {
-        let params = [txHash.bytes.base58EncodedString, accountId]
+        let params = [txHash.byteArray.base58EncodedString, accountId]
         return sendJsonRpc(method: "tx", params: params)
     }
 
     public func experimentalTxStatusWithReceipts(txHash: Data, accountId: String) -> Promise<FinalExecutionOutcome> {
-        let params = [txHash.bytes.base58EncodedString, accountId]
+        let params = [txHash.byteArray.base58EncodedString, accountId]
         return sendJsonRpc(method: "EXPERIMENTAL_tx_status", params: params)
     }
 
