@@ -1,6 +1,6 @@
 import XCTest
-import CryptoSwift
 @testable import NearSwift
+@testable import CryptoSwift
 
 final class NearSwiftKeyPairTests: XCTestCase {
     func testPublicKeyExample() throws {
